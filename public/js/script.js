@@ -5,141 +5,122 @@ let textBox = document.getElementById("textBox");
 let chatContainer = document.getElementById("chatContainer");
 
 let user = {
-    message: ""
+  message: "",
 };
 
 let arryPossiblMsg = [
+  {
+    message: "hello",
+    response: "Hello there! How can I assist you today?",
+  },
 
-    {
-        message: "hello",
-        response: "Hello there! How can I assist you today?"
-    },
+  {
+    message: "hi",
+    response: "Hi there! How can I help you?",
+  },
 
-    {
-        message: "hi",
-        response: "Hi there! How can I help you?"
-    },
+  {
+    message: "how are you",
+    response: "I'm doing well, thank you for asking!",
+  },
 
-    {
-        message: "how are you",
-        response: "I'm doing well, thank you for asking!"
-    },
+  {
+    message: "what's up",
+    response: "Not much, just here to assist you!",
+  },
 
-    {
-        message: "what's up",
-        response: "Not much, just here to assist you!"
-    },
+  {
+    message: "good morning",
+    response: "Good morning! Hope you have a great day!",
+  },
 
-    {
-        message: "good morning",
-        response: "Good morning! Hope you have a great day!"
-    },
+  {
+    message: "good afternoon",
+    response: "Good afternoon! How can I assist you?",
+  },
 
-    {
-        message: "good afternoon",
-        response: "Good afternoon! How can I assist you?"
-    },
+  {
+    message: "good evening",
+    response: "Good evening! How can I help you?",
+  },
 
-    {
-        message: "good evening",
-        response: "Good evening! How can I help you?"
-    },
+  {
+    message: "bye",
+    response: "Goodbye! Have a great day!",
+  },
 
-    {
-        message: "bye",
-        response: "Goodbye! Have a great day!"
-    },
+  {
+    message: "thank you",
+    response:
+      "You're welcome! If you have any more questions, feel free to ask.",
+  },
 
-    {
-        message: "thank you",
-        response: "You're welcome! If you have any more questions, feel free to ask."
-    },
+  {
+    message: "thanks",
+    response:
+      "You're welcome! If you have any more questions, feel free to ask.",
+  },
 
-    {
-        message: "thanks",
-        response: "You're welcome! If you have any more questions, feel free to ask."
-    },
-
-    {
-        message: "what is your name",
-        response: "I am a ChatBot created to assist you."
-    }
-
+  {
+    message: "what is your name",
+    response: "I am a ChatBot created to assist you.",
+  },
 ];
-
 
 // Send User Message
 function sendMessage(userMessage) {
+  let msgElement = document.createElement("div");
 
-    let msgElement = document.createElement("div");
+  msgElement.style.textAlign = "right";
 
-    msgElement.style.textAlign = "right";
+  msgElement.style.margin = "10px";
 
-    msgElement.style.margin = "10px";
-
-    msgElement.innerHTML =
-        "<span class='badge bg-primary p-2'>" +
-        userMessage +
-        "</span>";
-
+  msgElement.innerHTML =
+    "<span class='badge bg-primary p-2'>" + userMessage + "</span>";
+setTimeout(() => {
+    msgElement.animate([{easing: "ease-in",opacity:0.4},{opacity:1},{duration:1000}])
     chatContainer.appendChild(msgElement);
+    
+}, 1000);
 }
-
 
 // ChatBot Response
 function chatBotResponse(userMessage) {
+  let chatBotMsg = "";
 
-    let chatBotMsg = "";
+  let result = arryPossiblMsg.filter((item) =>
+    userMessage.toLowerCase().includes(item.message),
+  );
 
-    let result = arryPossiblMsg.filter((item) =>
-        userMessage.toLowerCase().includes(item.message)
-    );
+  if (result.length > 0) {
+    chatBotMsg = result[0].response;
+  } else {
+    chatBotMsg = "Sorry, please send another message.";
+  }
 
-    if (result.length > 0) {
+  let msgElement = document.createElement("div");
 
-        chatBotMsg = result[0].response;
+  msgElement.style.textAlign = "left";
 
-    } else {
+  msgElement.style.margin = "10px";
 
-        chatBotMsg = "Sorry, I don't understand.";
-    }
+  msgElement.innerHTML =
+    "<span class='badge bg-success p-2'>" + chatBotMsg + "</span>";
 
-
-    let msgElement = document.createElement("div");
-
-    msgElement.style.textAlign = "left";
-
-    msgElement.style.margin = "10px";
-
-    msgElement.innerHTML =
-        "<span class='badge bg-success p-2'>" +
-        chatBotMsg +
-        "</span>";
-
-    chatContainer.appendChild(msgElement);
+  chatContainer.appendChild(msgElement);
 }
-
 
 // Button Click Event
 sendBtn.addEventListener("click", function () {
+  let userMsg = textBox.value;
 
-    let userMsg = textBox.value;
-
-    if (userMsg == "") {
-
-        alert("Please enter a message");
-
-    } else {
-
-        let userMessageText = userMsg.trim();
-
-        user.message = userMessageText;
-
-        textBox.value = "";
-
-        sendMessage(userMessageText);
-
-        chatBotResponse(userMessageText);
-    }
-
+  if (userMsg == "") {
+    alert("Please enter a message");
+  } else {
+    let userMessageText = userMsg.trim();
+    user.message = userMessageText;
+    textBox.value = "";
+    sendMessage(userMessageText);
+    chatBotResponse(userMessageText);
+  }
 });
